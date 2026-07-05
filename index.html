@@ -220,10 +220,7 @@
                         
                         <!-- Filters -->
                         <div class="flex flex-wrap gap-2 items-center" id="filter-container">
-                            <button class="filter-btn active bg-brand-main text-white px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-sm" data-filter="all">Tutti</button>
-                            <button class="filter-btn bg-white text-slate-600 border border-slate-200 hover:border-brand-main px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="Articolo scientifico">Scientifici</button>
-                            <button class="filter-btn bg-white text-slate-600 border border-slate-200 hover:border-brand-main px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="Saggio storico">Saggi storici</button>
-                            <button class="filter-btn bg-white text-slate-600 border border-slate-200 hover:border-brand-main px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="Editoriale">Editoriali</button>
+                            <!-- I bottoni verranno generati dinamicamente dal JS in base alle categorie reali -->
                         </div>
                     </div>
                 </div>
@@ -393,13 +390,13 @@
     <script>
         const articles = [
             { id: 188, title: "Framework ibrido ad alta efficienza per l’ottimizzazione quantistica delle geometrie molecolari", author: "Filippo Zanetti", date: "04/07/2026", category: "Articolo scientifico", content: "Proposta di un framework ibrido ad alta efficienza per l’ottimizzazione quantistica delle geometrie molecolari all'interno dell'ecosistema di simulazione.", image: null },
-            { id: 186, title: "Come creare un Gem", author: "Mirko Yuri Donato", date: "02/07/2026", category: "Articolo scientifico", content: "Manuale e articolo scientifico sulle metodologie di creazione di un Gem all'interno dell'ecosistema micronazionale, fornendo linee guida strutturate per i fondatori.", image: null },
+            { id: 186, title: "Come creare un Gem", author: "Mirko Yuri Donato", date: "02/07/2026", category: "Manuale", content: "Manuale e articolo scientifico sulle metodologie di creazione di un Gem all'interno dell'ecosistema micronazionale, fornendo linee guida strutturate per i fondatori.", image: null },
             { id: 184, title: "Analisi Massiccia di Documenti con LLM Locali: Prevenzione delle Allucinazioni tramite RAG", author: "Francesco Pallara", date: "01/07/2026", category: "Articolo scientifico", content: "Questo paper esplora l'applicazione di Large Language Models (LLM) eseguiti localmente per l'analisi massiccia di documenti provenienti dal Centro Culturale Leonense. Viene affrontato il problema delle allucinazioni testuali implementando un sistema RAG (Retrieval-Augmented Generation) combinato con una rigorosa sanitizzazione del dataset micronazionale.", image: "https://placehold.co/800x500/1a6b46/ffffff?font=playfair&text=LLM+Locali+%26+RAG" },
-            { id: 183, title: "In varietate concordia", author: "Filippo Zanetti", date: "30/06/2026", category: "Editoriale", content: "Opinion paper che riflette sul motto 'In varietate concordia' e sulla sua applicazione nel contesto della comunità leonense e del suo pluralismo culturale.", image: null },
-            { id: 178, title: "L'uroboro arcadiano", author: "Carlo Cesare Orlando", date: "23/06/2026", category: "Editoriale", content: "Opinion paper critico che analizza il ciclo vitale e politico dell'esperienza arcadiana, paragonandola al mito dell'uroboro e riflettendo sulle ripetizioni dei pattern istituzionali.", image: null },
-            { id: 176, title: "Report sullo stato di salute delle opere conservate nel Centro Culturale Leonense", author: "Filippo Zanetti", date: "18/06/2026", category: "Saggio storico", content: "Report dettagliato sullo stato di conservazione, archiviazione e catalogazione delle opere letterarie e multimediali del Centro Culturale Leonense.", image: null },
+            { id: 183, title: "In varietate concordia", author: "Filippo Zanetti", date: "30/06/2026", category: "Opinion Paper", content: "Opinion paper che riflette sul motto 'In varietate concordia' e sulla sua applicazione nel contesto della comunità leonense e del suo pluralismo culturale.", image: null },
+            { id: 178, title: "L'uroboro arcadiano", author: "Carlo Cesare Orlando", date: "23/06/2026", category: "Opinion Paper", content: "Opinion paper critico che analizza il ciclo vitale e politico dell'esperienza arcadiana, paragonandola al mito dell'uroboro e riflettendo sulle ripetizioni dei pattern istituzionali.", image: null },
+            { id: 176, title: "Report sullo stato di salute delle opere conservate nel Centro Culturale Leonense", author: "Filippo Zanetti", date: "18/06/2026", category: "Report", content: "Report dettagliato sullo stato di conservazione, archiviazione e catalogazione delle opere letterarie e multimediali del Centro Culturale Leonense.", image: null },
             { id: 174, title: "Analisi delle componenti principali dell'attività micronazionale", author: "Filippo Zanetti, Francesco Scognamiglio, Carlo Cesare Orlando, Tobia Testa", date: "14/06/2026", category: "Articolo scientifico", content: "In questo studio viene applicata l'Analisi delle Componenti Principali (PCA) ai dataset storici dell'attività delle micronazioni leonensi.", image: "https://placehold.co/800x500/1a6b46/ffffff?font=playfair&text=PCA+Analisi" },
-            { id: 149, title: "Stato attuale della teoria dell'attività", author: "Filippo Zanetti", date: "31/03/2024", category: "Saggio storico", content: "Articolo di rassegna che fa il punto sulla teoria dell'attività micronazionale.", image: null },
+            { id: 149, title: "Stato attuale della teoria dell'attività", author: "Filippo Zanetti", date: "31/03/2024", category: "Review", content: "Articolo di rassegna che fa il punto sulla teoria dell'attività micronazionale.", image: null },
             { id: 142, title: "Quali micronazioni sono leonensi?", author: "Carlo Cesare Orlando", date: "23/03/2024", category: "Saggio storico", content: "Trattato che definisce in maniera organica i criteri storici, culturali e geopolitici per identificare l'appartenenza di una nazione virtuale all'ecosistema leonense.", image: null },
             { id: 134, title: "Campionamento dell'attività micronazionale", author: "Filippo Zanetti, Tobia Testa, Francesco Scognamiglio", date: "18/03/2024", category: "Articolo scientifico", content: "Questo articolo propone un nuovo standard per la raccolta dati, basato su script Python per l'estrazione dai file JSON delle chat Telegram.", image: "https://placehold.co/800x500/1a6b46/ffffff?font=playfair&text=Campionamento" },
             { id: 121, title: "Storia di Lumenaria - Quarta Edizione", author: "Filippo Zanetti", date: "28/06/2023", category: "Saggio storico", content: "Ultimo tributo di F. Zanetti a Lumenaria e alla Leonidia, il saggio ripercorre la storia di Lumenaria da febbraio 2020 fino al 27 giugno 2023.", image: "https://placehold.co/800x500/b45309/ffffff?font=playfair&text=Storia+di+Lumenaria" }
@@ -452,9 +449,12 @@
         // Crea le card HTML
         function generateCardHTML(article) {
             let icon = 'fa-file-alt';
-            if(article.category === 'Articolo scientifico') icon = 'fa-flask';
-            else if(article.category === 'Saggio storico') icon = 'fa-book';
-            else if(article.category === 'Editoriale') icon = 'fa-newspaper';
+            const catLower = article.category.toLowerCase();
+            if(catLower.includes('scientifico')) icon = 'fa-flask';
+            else if(catLower.includes('saggio') || catLower.includes('storia')) icon = 'fa-book';
+            else if(catLower.includes('opinion') || catLower.includes('editoriale')) icon = 'fa-newspaper';
+            else if(catLower.includes('manuale') || catLower.includes('guida')) icon = 'fa-tools';
+            else if(catLower.includes('report') || catLower.includes('review')) icon = 'fa-chart-pie';
 
             const imgHtml = article.image 
                 ? `<div class="w-full h-48 overflow-hidden border-b border-slate-100"><img src="${article.image}" alt="Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>` 
@@ -515,6 +515,34 @@
             }
 
             grid.innerHTML = filteredArticles.map(generateCardHTML).join('');
+        }
+
+        // Genera i bottoni filtro dinamicamente in base alle categorie presenti
+        function renderFilters() {
+            const container = document.getElementById('filter-container');
+            const categories = ['all', ...new Set(articles.map(a => a.category))];
+            
+            container.innerHTML = categories.map(cat => {
+                const isActive = cat === 'all';
+                const label = cat === 'all' ? 'Tutti' : cat;
+                const activeClasses = isActive ? 'active bg-brand-main text-white shadow-sm' : 'bg-white text-slate-600';
+                return `<button class="filter-btn ${activeClasses} border border-slate-200 hover:border-brand-main px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="${cat}">${label}</button>`;
+            }).join('');
+
+            // Aggiungi event listener ai nuovi bottoni
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-brand-main', 'text-white', 'shadow-sm', 'active');
+                        b.classList.add('bg-white', 'text-slate-600');
+                    });
+                    
+                    e.target.classList.remove('bg-white', 'text-slate-600');
+                    e.target.classList.add('bg-brand-main', 'text-white', 'shadow-sm', 'active');
+                    
+                    renderArchive(e.target.getAttribute('data-filter'));
+                });
+            });
         }
 
         function scrollToAbout() {
@@ -641,6 +669,7 @@
 
         // Inizializzazione all'avvio
         document.addEventListener('DOMContentLoaded', () => {
+            renderFilters();
             renderFeatured();
             
             // Leggi l'URL per capire quale pagina mostrare all'avvio
@@ -658,20 +687,7 @@
                 const activeFilterBtn = document.querySelector('.filter-btn.active');
                 renderArchive(activeFilterBtn ? activeFilterBtn.getAttribute('data-filter') : 'all');
             });
-
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.filter-btn').forEach(b => {
-                        b.classList.remove('bg-brand-main', 'text-white', 'shadow-sm', 'active');
-                        b.classList.add('bg-white', 'text-slate-600');
-                    });
-                    
-                    e.target.classList.remove('bg-white', 'text-slate-600');
-                    e.target.classList.add('bg-brand-main', 'text-white', 'shadow-sm', 'active');
-                    
-                    renderArchive(e.target.getAttribute('data-filter'));
-                });
-            });
+            // Gli event listener dei bottoni filtro sono ora gestiti da renderFilters()
         });
     </script>
 </body>
