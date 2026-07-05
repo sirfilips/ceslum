@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro Studi Lumenarensi | CeSLum</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            main: '#1a6b46', // Institutional Green extracted from the logo
+                            gold: '#b45309', // Classic gold/bronze
+                            light: '#f8fafc',
+                            dark: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar and minor tweaks */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .article-card {
+            transition: all 0.3s ease;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.3s ease-out;
+        }
+        .modal-leave {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .modal-leave-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.2s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-brand-light font-sans text-slate-800 antialiased selection:bg-brand-main selection:text-white">
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="#" class="flex-shrink-0 flex items-center gap-3 group">
+                        <img src="image_291e3a.png" alt="CeSLum Logo" class="w-12 h-12 object-contain rounded shadow-sm group-hover:opacity-90 transition-opacity">
+                        <span class="font-serif font-bold text-2xl text-brand-dark tracking-tight hidden sm:block">CeSLum</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-slate-600 hover:text-brand-main font-medium transition-colors">Home</a>
+                    <a href="#archivio" class="text-slate-600 hover:text-brand-main font-medium transition-colors">Archivio Pubblicazioni</a>
+                    <a href="#about" class="text-slate-600 hover:text-brand-main font-medium transition-colors">Chi Siamo</a>
+                    <button onclick="document.getElementById('contactModal').classList.remove('hidden')" class="bg-brand-main text-white px-5 py-2 rounded font-medium hover:bg-green-800 transition-colors shadow-md">
+                        Contattaci
+                    </button>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button type="button" class="text-slate-600 hover:text-brand-dark focus:outline-none" aria-label="Menu">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="relative bg-brand-dark text-white overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://placehold.co/1920x1080/0f172a/ffffff?text=Texture')] bg-cover bg-center"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-dark z-0"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-24 md:py-32">
+            <div class="max-w-3xl">
+                <span class="text-brand-gold font-semibold tracking-wider uppercase text-sm mb-4 block">Rivista Accademica Ufficiale</span>
+                <h1 class="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6">
+                    Centro Studi Lumenarensi
+                </h1>
+                <p class="text-xl text-slate-300 font-light mb-10 leading-relaxed">
+                    La voce accademica della Leonidia. Ricerca, analisi statistica e preservazione della storia del mondo micronazionale dal 2021.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#archivio" class="bg-brand-gold hover:bg-amber-600 text-white px-8 py-3 rounded text-center font-medium transition-colors shadow-lg">
+                        Leggi gli Articoli
+                    </a>
+                    <a href="#about" class="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white px-8 py-3 rounded text-center font-medium transition-all">
+                        Scopri il Progetto
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="archivio" class="py-20 bg-brand-light">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark mb-4">Ultimi Studi e Pubblicazioni</h2>
+                        <p class="text-slate-600 max-w-2xl">
+                            Esplora l'archivio completo degli articoli scientifici, saggi storici ed editoriali pubblicati dalla nostra redazione.
+                        </p>
+                    </div>
+                    
+                    <div class="mt-8 md:mt-0 flex flex-wrap gap-2 items-center" id="filter-container">
+                        <button class="filter-btn active bg-brand-main text-white px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-sm" data-filter="all">Tutti</button>
+                        <button class="filter-btn bg-white text-slate-600 border border-slate-200 hover:border-brand-main px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="Articolo scientifico">Scientifici</button>
+                        <button class="filter-btn bg-white text-slate-600 border border-slate-200 hover:border-brand-main px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="Saggio storico">Saggi</button>
+                        <button class="filter-btn bg-white text-slate-600 border border-slate-200 hover:border-brand-main px-4 py-2 rounded-full text-sm font-medium transition-colors" data-filter="Editoriale">Editoriali</button>
+                    </div>
+                </div>
+
+                <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Articles will be injected here by JS -->
+                </div>
+
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-white border-t border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row gap-16 items-center">
+                    <div class="lg:w-1/2">
+                        <img src="image_291e1c.png" alt="Banner Centro Studi Lumenarensi" class="rounded-lg shadow-xl w-full object-cover">
+                    </div>
+                    <div class="lg:w-1/2">
+                        <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark mb-6">Il Cuore Culturale della Leonidia</h2>
+                        <div class="space-y-4 text-slate-600 text-lg leading-relaxed">
+                            <p>
+                                Fondato all'interno della Repubblica di Lumenaria, il <strong>Centro Studi Lumenarensi (CeSLum)</strong> nasce con l'obiettivo di studiare, mappare e preservare la complessa geopolitica e l'attività culturale del mondo micronazionale Leonense.
+                            </p>
+                            <p>
+                                Attraverso indagini statistiche, articoli scientifici e analisi socio-politiche rigorose, ci impegniamo a fornire una lente obiettiva per comprendere l'evoluzione delle micronazioni, le loro ideologie e il loro ciclo vitale.
+                            </p>
+                            <p>
+                                Attualmente, il CeSLum funge da rivista ufficiale del <em>Consiglio della Comunità Leonense</em>, continuando la sua missione di divulgazione accademica e preservazione storica attraverso iniziative come il progetto Alexandrea e la Biblioteca Lumenarense.
+                            </p>
+                        </div>
+                        <div class="mt-8 flex gap-4">
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex-1 text-center">
+                                <div class="text-3xl font-bold text-brand-main mb-1">190+</div>
+                                <div class="text-sm text-slate-500 font-medium">Documenti Archiviati</div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 flex-1 text-center">
+                                <div class="text-3xl font-bold text-brand-gold mb-1">2021</div>
+                                <div class="text-sm text-slate-500 font-medium">Anno di Fondazione</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-brand-dark text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <img src="image_291e3a.png" alt="CeSLum Logo" class="w-10 h-10 object-contain rounded">
+                    <span class="font-serif font-bold text-xl text-white tracking-tight">CeSLum</span>
+                </div>
+                <p class="text-sm">
+                    Ricerca, analisi e storia del mondo micronazionale.<br>
+                    In varietate concordia.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-medium mb-4">Link Utili</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#archivio" class="hover:text-white transition-colors">Archivio Articoli</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Consiglio della Comunità Leonense</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Leonia Wiki</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-medium mb-4">Iscriviti alla Rivista</h4>
+                <p class="text-sm mb-4">Ricevi gli ultimi paper e report direttamente sulla tua casella.</p>
+                <div class="flex">
+                    <input type="email" placeholder="La tua email..." class="bg-slate-800 border-none rounded-l px-4 py-2 text-sm w-full focus:outline-none focus:ring-1 focus:ring-brand-main text-white">
+                    <button class="bg-brand-main text-white px-4 py-2 rounded-r hover:bg-green-700 transition-colors">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-800 text-sm text-center md:text-left flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; 2026 Centro Studi Lumenarensi. Dati estratti dagli archivi Telegram.</p>
+            <div class="flex gap-4 mt-4 md:mt-0 text-lg">
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Article Reading Modal -->
+    <div id="articleModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closeModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            
+            <!-- Modal panel -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-start mb-5 border-b border-slate-100 pb-4">
+                        <div>
+                            <span id="modal-category" class="text-xs font-bold text-brand-gold uppercase tracking-wider mb-2 block">Categoria</span>
+                            <h3 id="modal-title" class="text-2xl md:text-3xl font-serif font-bold text-brand-dark" id="modal-title">
+                                Titolo Articolo
+                            </h3>
+                            <div class="mt-2 flex items-center gap-4 text-sm text-slate-500">
+                                <span id="modal-author"><i class="fas fa-user-edit mr-1"></i> Autore</span>
+                                <span id="modal-date"><i class="fas fa-calendar-alt mr-1"></i> Data</span>
+                            </div>
+                        </div>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="mt-4 prose prose-slate max-w-none">
+                        <div id="modal-image-container" class="mb-6 w-full h-64 bg-slate-100 rounded-lg overflow-hidden hidden">
+                            <img id="modal-image" src="" alt="Copertina" class="w-full h-full object-cover">
+                        </div>
+                        <div id="modal-content" class="text-slate-700 leading-relaxed text-lg whitespace-pre-wrap">
+                            Contenuto dell'articolo...
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-4 py-4 sm:px-6 flex flex-row-reverse border-t border-slate-200">
+                    <button type="button" onclick="closeModal()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-6 py-2 bg-brand-main text-base font-medium text-white hover:bg-green-800 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+                        Chiudi
+                    </button>
+                    <button type="button" onclick="alert('Funzione di download PDF non disponibile in questa demo.')" class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-6 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <i class="fas fa-download mr-2 mt-1"></i> Scarica PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-slate-900 bg-opacity-75 backdrop-blur-sm" onclick="document.getElementById('contactModal').classList.add('hidden')"></div>
+            <div class="relative inline-block w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <h3 class="text-2xl font-serif font-bold text-brand-dark mb-4">Contatta la Redazione</h3>
+                <p class="text-sm text-slate-500 mb-6">Il CeSLum è disponibile per la pubblicazione di articoli scientifici, review e opinion paper di qualsiasi genere. Compila il form per sottoporre il tuo lavoro.</p>
+                <form onsubmit="event.preventDefault(); alert('Messaggio inviato con successo!'); document.getElementById('contactModal').classList.add('hidden');">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nome completo</label>
+                        <input type="text" required class="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-brand-main">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Tipologia Documento</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-brand-main">
+                            <option>Articolo Scientifico</option>
+                            <option>Saggio Storico</option>
+                            <option>Opinion Paper / Editoriale</option>
+                            <option>Altro</option>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Messaggio / Abstract</label>
+                        <textarea rows="4" required class="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-brand-main"></textarea>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" onclick="document.getElementById('contactModal').classList.add('hidden')" class="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 rounded hover:bg-slate-200">Annulla</button>
+                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-brand-main rounded hover:bg-green-800">Invia Proposta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const articles = [
+            {
+                id: 188,
+                title: "Framework ibrido ad alta efficienza per l’ottimizzazione quantistica delle geometrie molecolari",
+                author: "Filippo Zanetti",
+                date: "04/07/2026",
+                category: "Articolo scientifico",
+                content: "Proposta di un framework ibrido ad alta efficienza per l’ottimizzazione quantistica delle geometrie molecolari all'interno dell'ecosistema di simulazione.",
+                image: null
+            },
+            {
+                id: 186,
+                title: "Come creare un Gem",
+                author: "Mirko Yuri Donato",
+                date: "02/07/2026",
+                category: "Articolo scientifico",
+                content: "Manuale e articolo scientifico sulle metodologie di creazione di un Gem all'interno dell'ecosistema micronazionale, fornendo linee guida strutturate per i fondatori.",
+                image: null
+            },
+            {
+                id: 184,
+                title: "Analisi Massiccia di Documenti con LLM Locali: Prevenzione delle Allucinazioni tramite RAG",
+                author: "Francesco Pallara",
+                date: "01/07/2026",
+                category: "Articolo scientifico",
+                content: "Questo paper esplora l'applicazione di Large Language Models (LLM) eseguiti localmente per l'analisi massiccia di documenti provenienti dal Centro Culturale Leonense. Viene affrontato il problema delle allucinazioni testuali implementando un sistema RAG (Retrieval-Augmented Generation) combinato con una rigorosa sanitizzazione del dataset micronazionale.",
+                image: "https://placehold.co/800x500/1a6b46/ffffff?font=playfair&text=LLM+Locali+%26+RAG"
+            },
+            {
+                id: 183,
+                title: "In varietate concordia",
+                author: "Filippo Zanetti",
+                date: "30/06/2026",
+                category: "Editoriale",
+                content: "Opinion paper che riflette sul motto 'In varietate concordia' e sulla sua applicazione nel contesto della comunità leonense e del suo pluralismo culturale.",
+                image: null
+            },
+            {
+                id: 178,
+                title: "L'uroboro arcadiano",
+                author: "Carlo Cesare Orlando",
+                date: "23/06/2026",
+                category: "Editoriale",
+                content: "Opinion paper critico che analizza il ciclo vitale e politico dell'esperienza arcadiana, paragonandola al mito dell'uroboro e riflettendo sulle ripetizioni dei pattern istituzionali.",
+                image: null
+            },
+            {
+                id: 176,
+                title: "Report sullo stato di salute delle opere conservate nel Centro Culturale Leonense",
+                author: "Filippo Zanetti",
+                date: "18/06/2026",
+                category: "Saggio storico",
+                content: "Report dettagliato sullo stato di conservazione, archiviazione e catalogazione delle opere letterarie e multimediali del Centro Culturale Leonense.",
+                image: null
+            },
+            {
+                id: 174,
+                title: "Analisi delle componenti principali dell'attività micronazionale",
+                author: "Filippo Zanetti, Francesco Scognamiglio, Carlo Cesare Orlando, Tobia Testa",
+                date: "14/06/2026",
+                category: "Articolo scientifico",
+                content: "In questo studio viene applicata l'Analisi delle Componenti Principali (PCA) ai dataset storici dell'attività delle micronazioni leonensi. L'obiettivo è isolare le variabili più influenti (attività culturale, politica, di piazza) nello sviluppo e nella longevità di una micronazione virtuale.",
+                image: "https://placehold.co/800x500/1a6b46/ffffff?font=playfair&text=PCA+Analisi"
+            },
+            {
+                id: 149,
+                title: "Stato attuale della teoria dell'attività",
+                author: "Filippo Zanetti",
+                date: "31/03/2024",
+                category: "Saggio storico",
+                content: "Articolo di rassegna che fa il punto sulla teoria dell'attività micronazionale, riassumendo gli studi condotti fino ad oggi e le nuove frontiere della ricerca quantitativa.",
+                image: null
+            },
+            {
+                id: 143,
+                title: "Integrazione di nuovi tipi di attività",
+                author: "Filippo Zanetti",
+                date: "23/03/2024",
+                category: "Articolo scientifico",
+                content: "Studio sull'integrazione di nuove metriche per calcolare l'attività micronazionale, includendo la partecipazione ad eventi vocali e la produzione multimediale in aggiunta a quelle canoniche.",
+                image: null
+            },
+            {
+                id: 142,
+                title: "Quali micronazioni sono leonensi?",
+                author: "Carlo Cesare Orlando",
+                date: "23/03/2024",
+                category: "Saggio storico",
+                content: "Trattato che definisce in maniera organica i criteri storici, culturali e geopolitici per identificare l'appartenenza di una nazione virtuale all'ecosistema leonense.",
+                image: null
+            },
+            {
+                id: 134,
+                title: "Campionamento dell'attività micronazionale",
+                author: "Filippo Zanetti, Tobia Testa, Francesco Scognamiglio",
+                date: "18/03/2024",
+                category: "Articolo scientifico",
+                content: "Questo articolo propone un nuovo standard per la raccolta dati, basato su script Python per l'estrazione dai file JSON delle chat Telegram, mediando i valori su base mensile e trimestrale.",
+                image: "https://placehold.co/800x500/1a6b46/ffffff?font=playfair&text=Campionamento"
+            },
+            {
+                id: 133,
+                title: "Comparazione tra le attività totali di micronazioni differenti",
+                author: "Filippo Zanetti",
+                date: "13/03/2024",
+                category: "Articolo scientifico",
+                content: "Un'analisi comparata delle metriche di attività tra diverse nazioni del settore, evidenziando pattern comuni di sviluppo, decrescita e declino vitale.",
+                image: null
+            },
+            {
+                id: 122,
+                title: "Fenomenologia dell'attività micronazionale e correlazione tra attività",
+                author: "Filippo Zanetti",
+                date: "16/11/2023",
+                category: "Articolo scientifico",
+                content: "Studio scientifico approfondito che esplora i fenomeni legati all'attività micronazionale e cerca correlazioni matematiche tra attività culturale, politica e sociale nei vari periodi.",
+                image: null
+            },
+            {
+                id: 121,
+                title: "Storia di Lumenaria - Quarta Edizione",
+                author: "Filippo Zanetti",
+                date: "28/06/2023",
+                category: "Saggio storico",
+                content: "Ultimo tributo di F. Zanetti a Lumenaria e alla Leonidia, il saggio ripercorre la storia di Lumenaria da febbraio 2020 fino al 27 giugno 2023. Oltre a narrare i fatti accaduti dopo la pubblicazione della Terza edizione sono stati modificati tutti i capitoli inserendo citazioni, commenti e note per permettere ai lettori di comprendere meglio lo svolgimento degli eventi.",
+                image: "https://placehold.co/800x500/b45309/ffffff?font=playfair&text=Storia+di+Lumenaria"
+            },
+            {
+                id: 120,
+                title: "Vessillologia e araldica leonense, Volume I",
+                author: "Filippo Zanetti",
+                date: "13/05/2023",
+                category: "Saggio storico",
+                content: "Trattato completo sullo sviluppo dell'araldica e della vessillologia all'interno del mondo micronazionale leonense, con focus sulle bandiere e gli stemmi di repubbliche e stati virtuali.",
+                image: null
+            },
+            {
+                id: 114,
+                title: "Atlante leonense",
+                author: "Filippo Zanetti",
+                date: "09/05/2023",
+                category: "Saggio storico",
+                content: "Trattato geografico e geopolitico che mappa l'evoluzione territoriale, amministrativa e statistica delle micronazioni nell'ambito leonense.",
+                image: null
+            },
+            {
+                id: 113,
+                title: "Sulle valute micronazionali a cambio fisso",
+                author: "Carlo Cesare Orlando",
+                date: "01/05/2023",
+                category: "Editoriale",
+                content: "Position paper che discute criticamente i modelli economici micronazionali basati su valute a cambio fisso (e bot valutari) e i loro impatti sull'attività e sull'inflazione interna.",
+                image: null
+            }
+        ];
+
+        function renderArticles(filter = 'all') {
+            const grid = document.getElementById('articles-grid');
+            grid.innerHTML = '';
+
+            const filteredArticles = filter === 'all' 
+                ? articles 
+                : articles.filter(a => a.category === filter);
+
+            filteredArticles.forEach(article => {
+                let icon = 'fa-file-alt';
+                if(article.category === 'Articolo scientifico') icon = 'fa-flask';
+                else if(article.category === 'Saggio storico') icon = 'fa-book';
+                else if(article.category === 'Editoriale') icon = 'fa-newspaper';
+
+                const card = document.createElement('div');
+                card.className = 'article-card bg-white rounded-xl border border-slate-200 overflow-hidden flex flex-col h-full shadow-sm cursor-pointer group';
+                card.onclick = () => openModal(article);
+
+                const imgHtml = article.image 
+                    ? `<div class="w-full h-48 overflow-hidden border-b border-slate-100"><img src="${article.image}" alt="Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>` 
+                    : `<div class="w-full h-48 bg-slate-50 border-b border-slate-200 flex items-center justify-center text-brand-main"><i class="fas ${icon} text-5xl opacity-20 group-hover:scale-110 transition-transform duration-500"></i></div>`;
+
+                card.innerHTML = `
+                    ${imgHtml}
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">${article.category}</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-brand-dark mb-2 leading-tight group-hover:text-brand-main transition-colors">${article.title}</h3>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-3 flex-grow">${article.content}</p>
+                        <div class="flex justify-between items-center text-xs text-slate-400 mt-auto pt-4 border-t border-slate-100">
+                            <span class="font-medium text-slate-600"><i class="fas fa-pen-nib mr-1"></i> ${article.author.length > 20 ? article.author.substring(0,20)+'...' : article.author}</span>
+                            <span>${article.date}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openModal(article) {
+            document.getElementById('modal-title').textContent = article.title;
+            document.getElementById('modal-category').textContent = article.category;
+            document.getElementById('modal-author').innerHTML = `<i class="fas fa-user-edit mr-1"></i> ${article.author}`;
+            document.getElementById('modal-date').innerHTML = `<i class="fas fa-calendar-alt mr-1"></i> ${article.date}`;
+            document.getElementById('modal-content').textContent = article.content;
+            
+            const imgContainer = document.getElementById('modal-image-container');
+            const imgEl = document.getElementById('modal-image');
+            
+            if (article.image) {
+                imgEl.src = article.image;
+                imgContainer.classList.remove('hidden');
+            } else {
+                imgContainer.classList.add('hidden');
+            }
+
+            const modal = document.getElementById('articleModal');
+            modal.classList.remove('hidden');
+            // Small delay for transition
+            setTimeout(() => {
+                modal.querySelector('.transform').classList.remove('scale-95', 'opacity-0');
+                modal.querySelector('.transform').classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('articleModal');
+            modal.querySelector('.transform').classList.remove('scale-100', 'opacity-100');
+            modal.querySelector('.transform').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderArticles();
+
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    buttons.forEach(b => {
+                        b.classList.remove('bg-brand-main', 'text-white', 'shadow-sm');
+                        b.classList.add('bg-white', 'text-slate-600');
+                    });
+                    
+                    const target = e.target;
+                    target.classList.remove('bg-white', 'text-slate-600');
+                    target.classList.add('bg-brand-main', 'text-white', 'shadow-sm');
+                    
+                    const filterValue = target.getAttribute('data-filter');
+                    renderArticles(filterValue);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
