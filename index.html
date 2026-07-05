@@ -72,7 +72,33 @@
             transform: scale(0.95);
             transition: all 0.2s ease-in;
         }
+
+        /* PDF Viewer Styles */
+        #pdf-viewer-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: #525659;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .pdf-page-canvas {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background-color: white;
+            max-width: 100%;
+            height: auto !important;
+        }
     </style>
+    
+    <!-- Load PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // Set worker path for PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
 </head>
 <body class="bg-brand-light font-sans text-slate-800 antialiased selection:bg-brand-main selection:text-white">
 
@@ -81,7 +107,7 @@
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
                     <a href="#" class="flex-shrink-0 flex items-center gap-3 group">
-                        <img src="image_291e3a.png" alt="CeSLum Logo" class="w-12 h-12 object-contain rounded shadow-sm group-hover:opacity-90 transition-opacity">
+                        <img src="image_291e3a.png" alt="CeSLum Logo" class="w-12 h-12 object-contain rounded shadow-sm group-hover:opacity-90 transition-opacity" onerror="this.src='https://placehold.co/100x100/1a6b46/ffffff?text=C';">
                         <span class="font-serif font-bold text-2xl text-brand-dark tracking-tight hidden sm:block">CeSLum</span>
                     </a>
                 </div>
@@ -103,9 +129,8 @@
         </div>
     </nav>
 
-    <header id="home" class="relative bg-brand-dark text-white overflow-hidden">
-        <div class="absolute inset-0 z-0 opacity-20 bg-[url('https://placehold.co/1920x1080/0f172a/ffffff?text=Texture')] bg-cover bg-center"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-dark z-0"></div>
+    <header id="home" class="relative bg-brand-main text-white overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-dark/80 z-0"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-24 md:py-32">
             <div class="max-w-3xl">
@@ -113,7 +138,7 @@
                 <h1 class="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6">
                     Centro Studi Lumenarensi
                 </h1>
-                <p class="text-xl text-slate-300 font-light mb-10 leading-relaxed">
+                <p class="text-xl text-slate-100 font-light mb-10 leading-relaxed">
                     La voce accademica della Leonidia. Ricerca, analisi statistica e preservazione della storia del mondo micronazionale dal 2021.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
@@ -159,7 +184,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row gap-16 items-center">
                     <div class="lg:w-1/2">
-                        <img src="image_291e1c.png" alt="Banner Centro Studi Lumenarensi" class="rounded-lg shadow-xl w-full object-cover">
+                        <img src="image_291e1c.png" alt="Banner Centro Studi Lumenarensi" class="rounded-lg shadow-xl w-full object-cover" onerror="this.src='https://placehold.co/800x500/1a6b46/ffffff?text=Centro+Studi+Lumenarensi';">
                     </div>
                     <div class="lg:w-1/2">
                         <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark mb-6">Il Cuore Culturale della Leonidia</h2>
@@ -194,7 +219,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
                 <div class="flex items-center gap-3 mb-4">
-                    <img src="image_291e3a.png" alt="CeSLum Logo" class="w-10 h-10 object-contain rounded">
+                    <img src="image_291e3a.png" alt="CeSLum Logo" class="w-10 h-10 object-contain rounded" onerror="this.src='https://placehold.co/100x100/1a6b46/ffffff?text=C';">
                     <span class="font-serif font-bold text-xl text-white tracking-tight">CeSLum</span>
                 </div>
                 <p class="text-sm">
@@ -230,48 +255,88 @@
         </div>
     </footer>
 
-    <!-- Article Reading Modal -->
-    <div id="articleModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <!-- Elsevier-style Article Reading Modal -->
+    <div id="articleModal" class="fixed inset-0 z-50 hidden overflow-hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex h-screen items-center justify-center pt-4 px-4 pb-20 text-center sm:p-0">
             <!-- Background overlay -->
             <div class="fixed inset-0 bg-slate-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closeModal()"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             
-            <!-- Modal panel -->
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="flex justify-between items-start mb-5 border-b border-slate-100 pb-4">
-                        <div>
-                            <span id="modal-category" class="text-xs font-bold text-brand-gold uppercase tracking-wider mb-2 block">Categoria</span>
-                            <h3 id="modal-title" class="text-2xl md:text-3xl font-serif font-bold text-brand-dark" id="modal-title">
-                                Titolo Articolo
-                            </h3>
-                            <div class="mt-2 flex items-center gap-4 text-sm text-slate-500">
-                                <span id="modal-author"><i class="fas fa-user-edit mr-1"></i> Autore</span>
-                                <span id="modal-date"><i class="fas fa-calendar-alt mr-1"></i> Data</span>
-                            </div>
-                        </div>
-                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
-                            <i class="fas fa-times text-2xl"></i>
+            <!-- Modal panel - Full Screen style -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-2xl transform transition-all sm:align-middle w-full h-[95vh] max-w-7xl flex flex-col">
+                
+                <!-- Modal Header -->
+                <div class="bg-white px-4 py-3 sm:px-6 border-b border-slate-200 flex justify-between items-center flex-shrink-0">
+                    <div class="flex items-center gap-3">
+                        <img src="image_291e3a.png" alt="CeSLum Logo" class="w-8 h-8 object-contain rounded" onerror="this.src='https://placehold.co/100x100/1a6b46/ffffff?text=C';">
+                        <span class="font-serif font-bold text-lg text-brand-dark">CeSLum Reader</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <a id="modal-pdf-download" href="#" target="_blank" download class="text-sm font-medium text-slate-600 hover:text-brand-main transition-colors flex items-center">
+                            <i class="fas fa-download mr-1"></i> Scarica PDF
+                        </a>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors bg-slate-100 hover:bg-slate-200 rounded-full w-8 h-8 flex items-center justify-center">
+                            <i class="fas fa-times"></i>
                         </button>
                     </div>
+                </div>
+                
+                <!-- Modal Body (Two Columns) -->
+                <div class="flex flex-col md:flex-row flex-grow overflow-hidden bg-slate-50">
                     
-                    <div class="mt-4 prose prose-slate max-w-none">
-                        <div id="modal-image-container" class="mb-6 w-full h-64 bg-slate-100 rounded-lg overflow-hidden hidden">
-                            <img id="modal-image" src="" alt="Copertina" class="w-full h-full object-cover">
+                    <!-- Left Sidebar (Metadata) -->
+                    <div class="md:w-1/3 lg:w-1/4 bg-white border-r border-slate-200 p-6 overflow-y-auto flex-shrink-0">
+                        <span id="modal-category" class="text-xs font-bold text-brand-gold uppercase tracking-wider mb-2 block">Categoria</span>
+                        <h3 id="modal-title" class="text-xl md:text-2xl font-serif font-bold text-brand-dark leading-tight mb-4">
+                            Titolo Articolo
+                        </h3>
+                        
+                        <div class="mb-6 pb-6 border-b border-slate-100">
+                            <div class="flex items-start gap-2 mb-2 text-sm text-slate-700">
+                                <i class="fas fa-user-edit mt-1 text-slate-400 w-4"></i>
+                                <span id="modal-author" class="font-medium">Autore</span>
+                            </div>
+                            <div class="flex items-start gap-2 text-sm text-slate-700">
+                                <i class="fas fa-calendar-alt mt-1 text-slate-400 w-4"></i>
+                                <span id="modal-date">Data</span>
+                            </div>
                         </div>
-                        <div id="modal-content" class="text-slate-700 leading-relaxed text-lg whitespace-pre-wrap">
-                            Contenuto dell'articolo...
+
+                        <div id="modal-image-container" class="mb-6 w-full rounded-lg overflow-hidden hidden shadow-sm border border-slate-100">
+                            <img id="modal-image" src="" alt="Copertina" class="w-full h-auto object-cover">
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-2">Abstract</h4>
+                            <div id="modal-content" class="text-slate-600 leading-relaxed text-sm whitespace-pre-wrap">
+                                Contenuto dell'articolo...
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="bg-slate-50 px-4 py-4 sm:px-6 flex flex-row-reverse border-t border-slate-200">
-                    <button type="button" onclick="closeModal()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-6 py-2 bg-brand-main text-base font-medium text-white hover:bg-green-800 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
-                        Chiudi
-                    </button>
-                    <button type="button" onclick="alert('Funzione di download PDF non disponibile in questa demo.')" class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-6 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        <i class="fas fa-download mr-2 mt-1"></i> Scarica PDF
-                    </button>
+
+                    <!-- Right Column (PDF Viewer) -->
+                    <div class="md:w-2/3 lg:w-3/4 flex-grow relative bg-[#525659]">
+                        
+                        <!-- PDF Loading Indicator -->
+                        <div id="pdf-loading-indicator" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 z-10">
+                            <i class="fas fa-circle-notch fa-spin text-4xl text-brand-main mb-4"></i>
+                            <p class="text-slate-600 font-medium">Caricamento documento...</p>
+                        </div>
+                        
+                        <!-- PDF Error State -->
+                        <div id="pdf-error-state" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 z-10 hidden">
+                            <i class="fas fa-exclamation-triangle text-4xl text-amber-500 mb-4"></i>
+                            <p class="text-slate-800 font-medium mb-2">Impossibile caricare il PDF.</p>
+                            <p class="text-slate-500 text-sm max-w-md text-center mb-4">Il file potrebbe non essere presente nella cartella 'pdf' o il server non permette il caricamento locale.</p>
+                            <a id="modal-pdf-fallback" href="#" target="_blank" class="bg-brand-main text-white px-4 py-2 rounded hover:bg-green-800 transition-colors">
+                                Apri in una nuova scheda
+                            </a>
+                        </div>
+
+                        <!-- PDF Render Container -->
+                        <div id="pdf-viewer-container" class="w-full h-full">
+                            <!-- Canvases will be injected here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -508,12 +573,21 @@
             });
         }
 
+        let currentPdfTask = null; // Store current rendering task to allow cancellation
+
         function openModal(article) {
             document.getElementById('modal-title').textContent = article.title;
             document.getElementById('modal-category').textContent = article.category;
-            document.getElementById('modal-author').innerHTML = `<i class="fas fa-user-edit mr-1"></i> ${article.author}`;
-            document.getElementById('modal-date').innerHTML = `<i class="fas fa-calendar-alt mr-1"></i> ${article.date}`;
+            document.getElementById('modal-author').textContent = article.author;
+            document.getElementById('modal-date').textContent = article.date;
             document.getElementById('modal-content').textContent = article.content;
+            
+            const pdfUrl = `pdf/${article.id}.pdf`;
+            const downloadBtn = document.getElementById('modal-pdf-download');
+            const fallbackBtn = document.getElementById('modal-pdf-fallback');
+            
+            downloadBtn.href = pdfUrl;
+            fallbackBtn.href = pdfUrl;
             
             const imgContainer = document.getElementById('modal-image-container');
             const imgEl = document.getElementById('modal-image');
@@ -532,14 +606,92 @@
                 modal.querySelector('.transform').classList.remove('scale-95', 'opacity-0');
                 modal.querySelector('.transform').classList.add('scale-100', 'opacity-100');
             }, 10);
+
+            // Load PDF
+            loadPdfInViewer(pdfUrl);
+        }
+
+        async function loadPdfInViewer(url) {
+            const viewerContainer = document.getElementById('pdf-viewer-container');
+            const loadingIndicator = document.getElementById('pdf-loading-indicator');
+            const errorState = document.getElementById('pdf-error-state');
+            
+            // Reset state
+            viewerContainer.innerHTML = '';
+            loadingIndicator.classList.remove('hidden');
+            errorState.classList.add('hidden');
+
+            // Cancel previous load if any
+            if (currentPdfTask) {
+                currentPdfTask.destroy();
+            }
+
+            try {
+                const loadingTask = pdfjsLib.getDocument(url);
+                currentPdfTask = loadingTask;
+                const pdf = await loadingTask.promise;
+
+                // Adjust scale based on container width to mimic "Fit Width"
+                const containerWidth = viewerContainer.clientWidth;
+                // Base scale, will be recalculated per page
+                let baseScale = 1.2; 
+                
+                if(window.innerWidth < 768) {
+                    baseScale = 0.8; // Smaller scale for mobile
+                }
+
+                // Render all pages (or just the first few if performance is an issue, but for papers all is usually fine)
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    
+                    // Calculate scale to fit width (with some padding)
+                    const viewportUnscaled = page.getViewport({ scale: 1.0 });
+                    const scale = (containerWidth - 40) / viewportUnscaled.width; 
+                    // Use calculated scale, but max out at 1.5 to prevent blurry huge text on ultrawide monitors
+                    const finalScale = Math.min(scale, 1.5);
+                    const viewport = page.getViewport({ scale: finalScale });
+
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'pdf-page-canvas';
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    
+                    viewerContainer.appendChild(canvas);
+                    await page.render(renderContext).promise;
+                }
+                
+                loadingIndicator.classList.add('hidden');
+
+            } catch (error) {
+                console.error('Error loading PDF:', error);
+                loadingIndicator.classList.add('hidden');
+                // Show error state only if it wasn't destroyed by closing the modal
+                if(error.name !== 'RenderingCancelledException' && error.message !== 'Worker was destroyed') {
+                   errorState.classList.remove('hidden');
+                }
+            }
         }
 
         function closeModal() {
             const modal = document.getElementById('articleModal');
             modal.querySelector('.transform').classList.remove('scale-100', 'opacity-100');
             modal.querySelector('.transform').classList.add('scale-95', 'opacity-0');
+            
+            // Stop PDF rendering to save resources
+            if (currentPdfTask) {
+                currentPdfTask.destroy();
+                currentPdfTask = null;
+            }
+
             setTimeout(() => {
                 modal.classList.add('hidden');
+                document.getElementById('pdf-viewer-container').innerHTML = ''; // Clear memory
             }, 200);
         }
 
